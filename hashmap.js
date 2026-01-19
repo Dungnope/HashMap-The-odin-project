@@ -115,6 +115,21 @@ class HashMap{
         }
     }
 
+    keys(){
+        let ans = [];
+        for(let i = 0; i < this.container.length; i++){
+            if(this.container[i] !== null){
+                let traverseNode = this.container[i].root;
+                while(traverseNode !== null){
+                    ans.push(traverseNode.key);
+                    traverseNode = traverseNode.next;
+                }
+            }
+        }
+        return ans;
+
+    }
+
 }
 
 const test = new HashMap();
@@ -131,5 +146,7 @@ test.set("Chad", 43);
 test.set("Zoro", 24);
 test.set("Sanji", 23);
 test.set("Raven", 44);
-test.set("Eren", 169);
-console.log(test.length());
+
+// test.keys().forEach((item) => {
+//     console.log(item);
+// })
