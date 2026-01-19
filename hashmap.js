@@ -40,6 +40,8 @@ class HashMap{
             //resolve collision
             if(this.container[index].root.key === key){
                 const traverseNode = this.container[index].root
+
+                //traverse the node until the last node
                 while(traverseNode.key !== key){
                     traverseNode = traverseNode.next;
                 }
@@ -56,11 +58,12 @@ class HashMap{
         if(this.container[index] === null) return null;
         let checkItem = this.container[index].root;
         while(checkItem !== null){
+            if(checkItem.key === key) return checkItem.data;
             checkItem = checkItem.next;
+
         }
-        
-        if(checkItem === null) return null;
-        return checkItem.data;
+
+        return null;
     }
 
     //check key exist on hashmap
@@ -69,13 +72,40 @@ class HashMap{
         return false;
     }
 
+    remove(key){
+        if(this.has(key)){
+            let idx = this.hash(key);
+            if(this.container[idx] === null){
+                return false;
+            }
 
+            let traverseNode = this.container[idx];
+            // while(traverseNode !== null){
+            //     if(traverseNode.key === key){
+
+            //     }
+            //     traverseNode = traverseNode.next;
+            // }
+            let bucketIdx = traverseNode.findIndex(key);
+            traverseNode.removeAt(bucketIdx);
+            if(traverseNode.root === null) this.container[idx] = null;
+            return true;
+        }
+        else return false;
+    }
 
 }
 
 const test = new HashMap(10, 0.75);
 
-test.set("100", 23);
-test.set("231", 45);
-test.set("124", 69);
-console.log(test.has("123"));
+test.set("Baki", 23);
+test.set("Goku", 43);
+test.set("Luffy", 24);
+test.set("Dio", 23);
+test.set("Jotaro", 44);
+test.set("Vegeta", 169);
+test.set("Nami", 24);
+test.remove("Vegeta");
+test.remove("Dio");
+test.remove("Jotaro");
+console.log(test);

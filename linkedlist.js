@@ -31,15 +31,15 @@ class LinkedList{
     }
 
     //add new node at start of list
-    prepend(data){
+    prepend(data, key){
         if(this.checkBlank()){
-            this.root = new Node(data);
+            this.root = new Node(data, key);
         }
         else{
             let tmp = this.root;
-            this.root = new Node(data);
+            this.root = new Node(data, key);
             this.root.next = tmp;
-        } 
+        }
     }
 
     //number node of list
@@ -108,12 +108,12 @@ class LinkedList{
     }
 
     //return index of value if exist
-    findIndex(value){
+    findIndex(key){
         if(this.checkBlank()) return -1;
         let index = 0;
         let tmp = this.root;
         while(tmp !== null){
-            if(tmp.data === value) return index;
+            if(tmp.key === key) return index;
             tmp = tmp.next;
             index++;
         }
