@@ -3,7 +3,7 @@ import { LinkedList, Node } from "./linkedlist.js";
 class HashMap{
     constructor(capacity, load_factor){
         this.load_factor = load_factor === undefined ? 0.75 : load_factor;
-        this.capacity = capacity === undefined ? 10 : capacity;
+        this.capacity = capacity === undefined ? 16 : capacity;
         this.container = Array(this.capacity).fill(null);
     }
 
@@ -21,14 +21,22 @@ class HashMap{
             // s[0]*31^(n-1) + s[1]*31^(n-2) + ... + s[n-1]
             for(let i = 0; i < key.length; i++){
                 hashCode += (key.charCodeAt(i)*31**(key.length - (i+1))); // take from java ulti libs
+                // hashCode = primeNumber * hashCode + key.charCodeAt(i);
+                hashCode %= this.capacity;
             }
-            hashCode %= this.capacity;
         }
 
         return hashCode;
     }
 
     set(key, value){
+        //calculate grow percentage
+        if((this.capacity * this.load_factor - this.length()) < 1){ 
+            this.capacity *= 2;
+            let doubleBucket = Array(this.capacity).fill(null);
+
+        }
+        
         let index = this.hash(key);
         
         if(this.container[index] === null){
@@ -51,6 +59,8 @@ class HashMap{
                 this.container[index].append(value, key);
             }
         }
+
+
     }
 
     get(key){
@@ -98,9 +108,16 @@ class HashMap{
         return ans;
     }
 
+    clear(){
+        for(let i = 0; i < this.container.length; i++){
+            if(this.container[i] === null) continue;
+            this.container[i] = null;
+        }
+    }
+
 }
 
-const test = new HashMap(10, 0.75);
+const test = new HashMap();
 
 test.set("Baki", 23);
 test.set("Goku", 43);
@@ -109,4 +126,10 @@ test.set("Dio", 23);
 test.set("Jotaro", 44);
 test.set("Vegeta", 169);
 test.set("Nami", 24);
+test.set("Robin", 23);
+test.set("Chad", 43);
+test.set("Zoro", 24);
+test.set("Sanji", 23);
+test.set("Raven", 44);
+test.set("Eren", 169);
 console.log(test.length());
