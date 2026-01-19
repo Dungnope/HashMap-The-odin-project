@@ -51,6 +51,17 @@ class HashMap{
         }
     }
 
+    get(key){
+        let index = this.hash(key);
+        let checkItem = this.container[index].root;
+        while(checkItem.key !== key && checkItem !== null){
+            checkItem = checkItem.next;
+        }
+        
+        if(checkItem === null) return null;
+        return checkItem.data;
+    }
+
 }
 
 const test = new HashMap(10, 0.75);
@@ -58,11 +69,4 @@ const test = new HashMap(10, 0.75);
 test.set("100", 23);
 test.set("231", 45);
 test.set("123", 69);
-test.container.forEach((item, idx) => {
-    if(idx === 0){
-        console.log("[");
-    }
-    console.log(item, idx);
-
-    if(idx === test.length - 1) console.log("]");
-})
+// console.log(test.get("21"));
