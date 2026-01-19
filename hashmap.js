@@ -80,18 +80,22 @@ class HashMap{
             }
 
             let traverseNode = this.container[idx];
-            // while(traverseNode !== null){
-            //     if(traverseNode.key === key){
-
-            //     }
-            //     traverseNode = traverseNode.next;
-            // }
+            //get idx of the item from the list of bucket
             let bucketIdx = traverseNode.findIndex(key);
             traverseNode.removeAt(bucketIdx);
             if(traverseNode.root === null) this.container[idx] = null;
             return true;
         }
         else return false;
+    }
+
+    length(){
+        let ans = 0;
+        for(let i = 0; i < this.container.length; i++){
+            if(this.container[i] === null) continue;
+            ans += this.container[i].size();
+        }
+        return ans;
     }
 
 }
@@ -105,7 +109,4 @@ test.set("Dio", 23);
 test.set("Jotaro", 44);
 test.set("Vegeta", 169);
 test.set("Nami", 24);
-test.remove("Vegeta");
-test.remove("Dio");
-test.remove("Jotaro");
-console.log(test);
+console.log(test.length());

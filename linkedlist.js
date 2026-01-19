@@ -30,18 +30,6 @@ class LinkedList{
         }
     }
 
-    //add new node at start of list
-    prepend(data, key){
-        if(this.checkBlank()){
-            this.root = new Node(data, key);
-        }
-        else{
-            let tmp = this.root;
-            this.root = new Node(data, key);
-            this.root.next = tmp;
-        }
-    }
-
     //number node of list
     size(){
         let number = 0;
@@ -121,18 +109,6 @@ class LinkedList{
         return -1;
     }
 
-    toString(){
-        if(this.checkBlank()) return `( ) -> `;
-        let ans = "";
-        let tmp = this.root;
-        while(tmp !== null){
-            ans += `( ${tmp.data} )`;
-            ans += " -> ";
-            tmp = tmp.next;
-        }
-        ans += tmp;
-        return ans;
-    }
 
     //insert elements at specific position
     insertAt(index, ...value){
