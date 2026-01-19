@@ -53,8 +53,9 @@ class HashMap{
 
     get(key){
         let index = this.hash(key);
+        if(this.container[index] === null) return null;
         let checkItem = this.container[index].root;
-        while(checkItem.key !== key && checkItem !== null){
+        while(checkItem !== null){
             checkItem = checkItem.next;
         }
         
@@ -62,11 +63,19 @@ class HashMap{
         return checkItem.data;
     }
 
+    //check key exist on hashmap
+    has(key){
+        if(this.get(key) !== null) return true;
+        return false;
+    }
+
+
+
 }
 
 const test = new HashMap(10, 0.75);
 
 test.set("100", 23);
 test.set("231", 45);
-test.set("123", 69);
-// console.log(test.get("21"));
+test.set("124", 69);
+console.log(test.has("123"));
