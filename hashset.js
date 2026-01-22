@@ -187,7 +187,7 @@ class HashSet{
 
     //check key exist on hashmap
     has(key){
-        if(this.container[this.hash()] !== null) return true;
+        if(this.container[this.hash(key)] !== null) return true;
         return false;
     }
 

@@ -46,7 +46,7 @@ class HashMap{
         
         let index = this.hash(key);
 
-        if(index >= this.length()) index = Math.floor(Math.random() % this.length());
+        if(index >= this.#container.length) index = Math.floor(Math.random() % this.length());
         
         if(this.#container[index] === null){
             this.#container[index] = new LinkedList(value, key);
