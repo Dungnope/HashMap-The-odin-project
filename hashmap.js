@@ -28,13 +28,18 @@ class HashMap{
 
         return hashCode;
     }
+    
 
     set(key, value){
         //calculate grow percentage
         if((this.capacity * this.load_factor - this.length()) < 1){ 
             this.capacity *= 2;
-            let doubleBucket = Array(this.capacity).fill(null);
-
+            let doubleBucket = this.container;
+            let entries = this.entries();
+            this.container = Array(this.capacity).fill(null);
+            for(let i = 0; i < entries.length; i++){
+                this.set(entries[i][0], entries[i][1]);
+            }
         }
         
         let index = this.hash(key);
@@ -47,7 +52,7 @@ class HashMap{
 
             //resolve collision
             if(this.container[index].root.key === key){
-                const traverseNode = this.container[index].root
+                const traverseNode = this.container[index].root;
 
                 //traverse the node until the last node
                 while(traverseNode.key !== key){
@@ -115,19 +120,38 @@ class HashMap{
         }
     }
 
-    keys(){
+    printProperty(property){
         let ans = [];
         for(let i = 0; i < this.container.length; i++){
             if(this.container[i] !== null){
                 let traverseNode = this.container[i].root;
                 while(traverseNode !== null){
-                    ans.push(traverseNode.key);
+                    ans.push(traverseNode[`${property}`]);
                     traverseNode = traverseNode.next;
                 }
             }
         }
         return ans;
+    }
 
+    keys(){
+        return this.printProperty('key');
+    }
+
+    values(){
+        return this.printProperty('data');
+    }
+
+    entries(){
+        let keys = this.keys();
+        let values = this.values();
+        let ans = [];
+        for(let i = 0; i < this.length(); i++){
+            let pair = [];
+            pair.push(keys[i], values[i]);
+            ans.push(pair);
+        }
+        return ans;
     }
 
 }
@@ -145,8 +169,7 @@ test.set("Robin", 23);
 test.set("Chad", 43);
 test.set("Zoro", 24);
 test.set("Sanji", 23);
-test.set("Raven", 44);
-
-// test.keys().forEach((item) => {
-//     console.log(item);
-// })
+test.set("Cyborg", 22);
+test.set("Steve", 42);
+test.set("Alex", 32);
+console.log(test.entries());
