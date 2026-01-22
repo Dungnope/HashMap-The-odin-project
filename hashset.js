@@ -181,7 +181,9 @@ class HashSet{
                 hashCode %= this.capacity;
             }
         }
-        if(hashCode >= this.container.length) hashCode = Math.floor(Math.random() * (this.length() + 1));
+        if (hashCode < 0 || hashCode >= this.container.length) {
+            throw new Error("Trying to access index out of bounds");
+        }
         return hashCode;
     }
 

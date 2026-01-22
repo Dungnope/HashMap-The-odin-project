@@ -29,6 +29,10 @@ class HashMap{
             }
         }
 
+        if (hashCode < 0 || hashCode >= this.#container.length) {
+          throw new Error("Trying to access index out of bounds");
+        }
+
         return hashCode;
     }
     
@@ -46,7 +50,6 @@ class HashMap{
         
         let index = this.hash(key);
 
-        if(index >= this.#container.length) index = Math.floor(Math.random() % this.length());
         
         if(this.#container[index] === null){
             this.#container[index] = new LinkedList(value, key);
