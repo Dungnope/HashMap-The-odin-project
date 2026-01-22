@@ -8,6 +8,7 @@ newSet.set("kid");
 newSet.set("test");
 newSet.remove("kid");
 console.log(newSet.keys());
+newSet.clear();
 console.log(newSet.length());
 
 let newMap = new HashMap();
@@ -18,4 +19,5 @@ newMap.set("231", "Baka");
 newMap.set("242", "Sura");
 console.log(newMap.entries());
 newMap.remove("23");
-console.log(newMap.length());
+newMap.clear();
+console.log(newMap.keys());
