@@ -6,7 +6,6 @@ class Node{
     }
 }
 
-
 class LinkedList{
     constructor(value, key){
         this.root = new Node(value, key);
@@ -84,17 +83,6 @@ class LinkedList{
         return ans;
     }
 
-    //check if value in list or not
-    contains(value){
-        let tmp = this.root;
-
-        while(tmp !== null){
-            if(tmp.data === value) return true;
-            tmp = tmp.next;
-        }
-        return false;
-    }
-
     //return index of value if exist
     findIndex(key){
         if(this.checkBlank()) return -1;
@@ -110,59 +98,6 @@ class LinkedList{
     }
 
 
-    //insert elements at specific position
-    insertAt(index, ...value){
-
-        //check whether index in head or tail
-        if(index === 0){
-            for (const item of value.reverse()) {
-                this.prepend(item);
-            }
-            return;
-        }
-        else if(index === this.size() - 1){
-            for (const item of value) {
-                this.append(item);
-            }
-            return;
-        }
-
-        //check if index out of bound
-        if(index > this.size() - 1 || index < 0) return `RangeError`;
-
-        // make array become linkedlist
-        function convertToList(array){
-            let list_from_array = new LinkedList();
-            for(let i = 0; i < array.length; i++){
-                list_from_array.append(array[i]);
-            }
-
-            return list_from_array;
-        }
-
-
-        //create new list from array
-        let array_list = convertToList(value);
-
-
-        let tmp_head = this.root;
-        while(index > 1){
-            tmp_head = tmp_head.next;
-            index--;
-        }
-
-        //make a node that point to next node of tmp_head
-        let tmp_catch_tail = tmp_head.next;
-
-        // make tmp_head node point to array_list
-        tmp_head.next = array_list.root;
-
-        // tmp_tail point to first node of array_list
-        let tmp_tail = tmp_head;
-        while(tmp_tail.next !== null) tmp_tail = tmp_tail.next;
-        tmp_tail.next = tmp_catch_tail;
-    }
-    
     removeAt(index){
         if(index > this.size() - 1 || index < 0) return `RangeError`;
 
@@ -204,4 +139,4 @@ class LinkedList{
 // test.removeAt(3); // test remove at position
 // console.log(test.toString());
 
-export {LinkedList, Node};
+export {LinkedList};

@@ -1,10 +1,13 @@
-import { LinkedList, Node } from "./linkedlist.js";
+import { LinkedList} from "./linkedlist.js";
 
 class HashMap{
+    #capacity;
+    #load_factor;
+    #container;
     constructor(capacity, load_factor){
-        this.load_factor = load_factor === undefined ? 0.75 : load_factor;
-        this.capacity = capacity === undefined ? 16 : capacity;
-        this.container = Array(this.capacity).fill(null);
+        this.#load_factor = load_factor === undefined ? 0.75 : load_factor;
+        this.#capacity = capacity === undefined ? 16 : capacity;
+        this.#container = Array(this.#capacity).fill(null);
     }
 
     hash(key){
@@ -13,7 +16,7 @@ class HashMap{
         const primeNumber = 31;
         if(typeof(key) === "number"){
             for (let i = 0; i < key; i++) {
-                hashCode = (primeNumber * hashCode + key) % this.capacity;
+                hashCode = (primeNumber * hashCode + key) % this.#capacity;
             }
 
         }
@@ -22,7 +25,7 @@ class HashMap{
             for(let i = 0; i < key.length; i++){
                 hashCode += (key.charCodeAt(i)*31**(key.length - (i+1))); // take from java ulti libs
                 // hashCode = primeNumber * hashCode + key.charCodeAt(i);
-                hashCode %= this.capacity;
+                hashCode %= this.#capacity;
             }
         }
 
@@ -32,27 +35,28 @@ class HashMap{
 
     set(key, value){
         //calculate grow percentage
-        if((this.capacity * this.load_factor - this.length()) < 1){ 
-            this.capacity *= 2;
-            let doubleBucket = this.container;
+        if((this.#capacity * this.#load_factor - this.length()) < 1){ 
+            this.#capacity *= 2;
             let entries = this.entries();
-            this.container = Array(this.capacity).fill(null);
+            this.#container = Array(this.#capacity).fill(null);
             for(let i = 0; i < entries.length; i++){
                 this.set(entries[i][0], entries[i][1]);
             }
         }
         
         let index = this.hash(key);
+
+        if(index >= this.length()) index = Math.floor(Math.random() % this.length());
         
-        if(this.container[index] === null){
-            this.container[index] = new LinkedList(value, key);
+        if(this.#container[index] === null){
+            this.#container[index] = new LinkedList(value, key);
         }
 
-        else if(this.container[index] !== null){
+        else if(this.#container[index] !== null){
 
             //resolve collision
-            if(this.container[index].root.key === key){
-                const traverseNode = this.container[index].root;
+            if(this.#container[index].root.key === key){
+                const traverseNode = this.#container[index].root;
 
                 //traverse the node until the last node
                 while(traverseNode.key !== key){
@@ -61,7 +65,7 @@ class HashMap{
                 traverseNode.data = value;
             }
             else{
-                this.container[index].append(value, key);
+                this.#container[index].append(value, key);
             }
         }
 
@@ -70,8 +74,8 @@ class HashMap{
 
     get(key){
         let index = this.hash(key);
-        if(this.container[index] === null) return null;
-        let checkItem = this.container[index].root;
+        if(this.#container[index] === null) return null;
+        let checkItem = this.#container[index].root;
         while(checkItem !== null){
             if(checkItem.key === key) return checkItem.data;
             checkItem = checkItem.next;
@@ -90,15 +94,15 @@ class HashMap{
     remove(key){
         if(this.has(key)){
             let idx = this.hash(key);
-            if(this.container[idx] === null){
+            if(this.#container[idx] === null){
                 return false;
             }
 
-            let traverseNode = this.container[idx];
+            let traverseNode = this.#container[idx];
             //get idx of the item from the list of bucket
             let bucketIdx = traverseNode.findIndex(key);
             traverseNode.removeAt(bucketIdx);
-            if(traverseNode.root === null) this.container[idx] = null;
+            if(traverseNode.root === null) this.#container[idx] = null;
             return true;
         }
         else return false;
@@ -106,25 +110,25 @@ class HashMap{
 
     length(){
         let ans = 0;
-        for(let i = 0; i < this.container.length; i++){
-            if(this.container[i] === null) continue;
-            ans += this.container[i].size();
+        for(let i = 0; i < this.#container.length; i++){
+            if(this.#container[i] === null) continue;
+            ans += this.#container[i].size();
         }
         return ans;
     }
 
     clear(){
-        for(let i = 0; i < this.container.length; i++){
-            if(this.container[i] === null) continue;
-            this.container[i] = null;
+        for(let i = 0; i < this.#container.length; i++){
+            if(this.#container[i] === null) continue;
+            this.#container[i] = null;
         }
     }
 
     printProperty(property){
         let ans = [];
-        for(let i = 0; i < this.container.length; i++){
-            if(this.container[i] !== null){
-                let traverseNode = this.container[i].root;
+        for(let i = 0; i < this.#container.length; i++){
+            if(this.#container[i] !== null){
+                let traverseNode = this.#container[i].root;
                 while(traverseNode !== null){
                     ans.push(traverseNode[`${property}`]);
                     traverseNode = traverseNode.next;
@@ -156,20 +160,4 @@ class HashMap{
 
 }
 
-const test = new HashMap();
-
-test.set("Baki", 23);
-test.set("Goku", 43);
-test.set("Luffy", 24);
-test.set("Dio", 23);
-test.set("Jotaro", 44);
-test.set("Vegeta", 169);
-test.set("Nami", 24);
-test.set("Robin", 23);
-test.set("Chad", 43);
-test.set("Zoro", 24);
-test.set("Sanji", 23);
-test.set("Cyborg", 22);
-test.set("Steve", 42);
-test.set("Alex", 32);
-console.log(test.entries());
+export {HashMap}
